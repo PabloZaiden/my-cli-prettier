@@ -4,7 +4,7 @@
  * The server command itself just shows help - tools must be specified as subcommands.
  */
 
-import { Command, type CommandResult, type OptionSchema, type OptionValues, AppContext } from "@pablozaiden/terminatui";
+import { Command, type OptionSchema, AppContext } from "@pablozaiden/terminatui";
 import type { Tool } from "@modelcontextprotocol/sdk/types.js";
 import type { ServerConfig } from "../config/types";
 import { isHttpConfig, isStdioConfig } from "../config/types";
@@ -97,30 +97,6 @@ export function createServerCommand(
         );
         return [];
       }
-    }
-
-    /**
-     * Server command cannot be executed directly - user must specify a tool.
-     */
-    override async execute(_config: OptionValues<typeof serverOptions>): Promise<CommandResult> {
-      // Load tools to populate subcommands for the help message
-      await this.loadTools();
-      
-      const toolNames = this.subCommands
-        .filter(cmd => cmd.name !== "help")
-        .map(cmd => cmd.name);
-
-      const errorMessage = toolNames.length > 0
-        ? `Server '${serverName}' requires a tool to be specified.\n\nRun 'my-cli-prettier ${serverName} help' to see available tools.\n\nAvailable tools: ${toolNames.join(", ")}`
-        : `Server '${serverName}' requires a tool to be specified.\n\nRun 'my-cli-prettier ${serverName} help' to see available tools.\n\n(No tools cached - the server may need to be connected first)`;
-
-      // Print error to stderr since terminatui doesn't display CommandResult errors in CLI mode
-      console.error(errorMessage);
-
-      return {
-        success: false,
-        error: errorMessage,
-      };
     }
   }
 
