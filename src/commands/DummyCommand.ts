@@ -13,10 +13,10 @@ export class DummyCommand extends Command<typeof dummyOptions> {
     override description: string = "This is a dummy command";
     override options = dummyOptions;
 
-    override async execute(config: {inputStr: string}, _execCtx?: CommandExecutionContext): Promise<CommandResult> {
+    override async execute(config: OptionValues<typeof dummyOptions>, _execCtx?: CommandExecutionContext): Promise<CommandResult> {
         const inputStr = config.inputStr;
 
-        AppContext.current.logger.info(`Dummy command received input: ${inputStr}`);
+        AppContext.current.logger.trace(`Dummy command received input: ${inputStr}`);
 
         return {
             success: true,

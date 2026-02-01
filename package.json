@@ -28,7 +28,7 @@
     "typescript": "5.9.3"
   },
   "dependencies": {
-    "@pablozaiden/terminatui": "0.5.2"
+    "@pablozaiden/terminatui": "0.5.4"
   },
   "scripts": {
     "start": "bun install; bun run src/index.ts",
