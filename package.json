@@ -1,0 +1,45 @@
+{
+  "name": "@pablozaiden/my-cli-prettier",
+  "version": "0.0.0-development",
+  "description": "CLI tool to expose MCP server operations via a CLI.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pablozaiden/my-cli-prettier.git"
+  },
+  "license": "MIT",
+  "author": "Pablo Zaidenvoren",
+  "keywords": [
+    "ai",
+    "cli",
+    "mcp",
+    "agents",
+    "coding"
+  ],
+  "module": "src/index.ts",
+  "type": "module",
+  "bin": {
+    "my-cli-prettier": "src/bin.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/react": "^19"
+  },
+  "peerDependencies": {
+    "typescript": "5.9.3"
+  },
+  "dependencies": {
+    "@pablozaiden/terminatui": "0.5.2"
+  },
+  "scripts": {
+    "start": "bun install; bun run src/index.ts",
+    "start:interactive": "bun run src/index.ts interactive",
+    "build": "bunx tsc --noEmit",
+    "compile": "export workspace_dir=$(pwd); export build_output=$(mktemp); bun install; (cd /tmp; bun build --compile --outfile=$build_output $workspace_dir/src/index.ts; mkdir -p $workspace_dir/out; mv $build_output $workspace_dir/out/my-cli-prettier);",
+    "compile:all": "export workspace_dir=$(pwd); mkdir -p $workspace_dir/out; for target_os in linux darwin; do for target_arch in x64 arm64; do bun install --cpu=$target_arch --os=$target_os; export build_output=$(mktemp); (cd /tmp; bun build --compile --outfile=$build_output $workspace_dir/src/index.ts --target bun-$target_os-$target_arch); mv $build_output $workspace_dir/out/my-cli-prettier-$target_os-$target_arch; done; done",
+    "test": "bun test",
+    "local-install": "./local-install.sh"
+  },
+  "config": {
+    "commitHash": ""
+  }
+}
