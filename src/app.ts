@@ -83,20 +83,24 @@ async function buildCommands(): Promise<Command[]> {
  * This is async because it needs to fetch tools from servers if not cached.
  */
 export async function createApp(): Promise<MyCLIPrettierApp> {
+  const app = new MyCLIPrettierApp();
   const commands = await buildCommands();
-  return new MyCLIPrettierApp(commands);
+  app.registerCommands(commands);
+  
+  return app;
 }
 
 export class MyCLIPrettierApp extends TuiApplication {
+  static appName = "mcp";
+
   protected override defaultMode: SupportedMode = "cli";
 
-  constructor(commands: Command[]) {
+  constructor() {
     super({
-      name: "mcp",
+      name: MyCLIPrettierApp.appName,
       displayName: "MCP CLI",
       version: pkg.version,
       commitHash: pkg.config?.commitHash,
-      commands,
 
       logger: {
         detailed: false,

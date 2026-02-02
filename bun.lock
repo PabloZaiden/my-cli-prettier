@@ -6,7 +6,7 @@
       "name": "@pablozaiden/my-cli-prettier",
       "dependencies": {
         "@modelcontextprotocol/sdk": "^1.11.5",
-        "@pablozaiden/terminatui": "0.6.3",
+        "@pablozaiden/terminatui": "0.7.0",
       },
       "devDependencies": {
         "@types/bun": "latest",
@@ -98,7 +98,7 @@
 
     "@opentui/react": ["@opentui/react@0.1.75", "", { "dependencies": { "@opentui/core": "0.1.75", "react-reconciler": "^0.32.0" }, "peerDependencies": { "react": ">=19.0.0", "react-devtools-core": "^7.0.1", "ws": "^8.18.0" } }, "sha512-XgZoBBEf1wf1BwxNbpMasArVvKcWPwVU4DUokYw/9ajtOw37KNBpz9I7BsuhDc6d8ovtInA2op9IWAoyiBU3Iw=="],
 
-    "@pablozaiden/terminatui": ["@pablozaiden/terminatui@0.6.3", "", { "dependencies": { "@opentui/core": "0.1.75", "@opentui/react": "0.1.75", "ink": "6.6.0", "ink-select-input": "6.2.0", "ink-text-input": "6.0.0", "react": "^19", "tslog": "4.10.2" }, "peerDependencies": { "typescript": "5.9.3" } }, "sha512-GKFTFCWJJGCAj7YAX8IX7x2H3LnLCT0uQ7Vxr9fve2k/qYbF2QEzTzgQ+ypdypFLtqHkO6VB83zGtfmGiL3tRw=="],
+    "@pablozaiden/terminatui": ["@pablozaiden/terminatui@0.7.0", "", { "dependencies": { "@opentui/core": "0.1.75", "@opentui/react": "0.1.75", "ink": "6.6.0", "ink-select-input": "6.2.0", "ink-text-input": "6.0.0", "react": "^19", "tslog": "4.10.2" }, "peerDependencies": { "typescript": "5.9.3" } }, "sha512-cJBclF5XfDHwJaicqkSb6ze6r9h3wHREl+lrXkqlCZ3SmK/vOqdYJjmkqBlp7vJXZ4lbh+sLg41WbTes3HNFoA=="],
 
     "@tokenizer/token": ["@tokenizer/token@0.3.0", "", {}, "sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A=="],
 

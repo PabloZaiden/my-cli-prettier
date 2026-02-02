@@ -283,24 +283,24 @@ export function createExampleConfig(): boolean {
 
   const exampleConfig: McpCliConfig = {
     servers: {
-      // Memory server - simple key-value store, works with npx
+      // Memory server - simple key-value store, works with bunx
       memory: {
         transport: "stdio",
-        command: "npx",
+        command: "bunx",
         args: ["-y", "@modelcontextprotocol/server-memory"],
         description: "Simple key-value memory store",
       },
       // Filesystem server - file operations
       filesystem: {
         transport: "stdio",
-        command: "npx",
+        command: "bunx",
         args: ["-y", "@modelcontextprotocol/server-filesystem", process.env["HOME"] || "/tmp"],
         description: "File system operations",
       },
       // Everything server - demo server with many tools for testing
       everything: {
         transport: "stdio",
-        command: "npx",
+        command: "bunx",
         args: ["-y", "@modelcontextprotocol/server-everything"],
         description: "Demo server with sample tools for testing",
       },

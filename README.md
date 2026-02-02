@@ -35,7 +35,7 @@ bun start -- everything echo --message "Hello MCP!"
 
 ### Prerequisites
 
-- [Bun](https://bun.sh) (recommended) or Node.js with npx
+- [Bun](https://bun.sh)
 
 ### Run from source
 
@@ -60,7 +60,7 @@ Config is stored at `~/.my-cli-prettier/config.json`:
   "servers": {
     "memory": {
       "transport": "stdio",
-      "command": "npx",
+      "command": "bunx",
       "args": ["-y", "@modelcontextprotocol/server-memory"],
       "description": "Simple key-value memory store"
     },
@@ -83,7 +83,7 @@ Config is stored at `~/.my-cli-prettier/config.json`:
 ```json
 {
   "transport": "stdio",
-  "command": "npx",
+  "command": "bunx",
   "args": ["-y", "@modelcontextprotocol/server-memory"],
   "env": { "API_KEY": "$MY_API_KEY" },
   "description": "Optional description",
@@ -115,7 +115,7 @@ mcp server list
 mcp server list --all
 
 # Add a stdio-based server (local process)
-mcp server add stdio --name memory --command npx --args "-y @modelcontextprotocol/server-memory" --description "Memory store"
+mcp server add stdio --name memory --command bunx --args "-y @modelcontextprotocol/server-memory" --description "Memory store"
 
 # Add an HTTP-based server (remote endpoint)
 mcp server add http --name docs --url "https://gitmcp.io/user/repo" --description "Documentation"
@@ -137,11 +137,11 @@ Output of `server list`:
 Enabled servers: 4
 
 ✓ memory - Simple key-value memory store
-  stdio: npx -y @modelcontextprotocol/server-memory
+  stdio: bunx -y @modelcontextprotocol/server-memory
 ✓ filesystem - File system operations
-  stdio: npx -y @modelcontextprotocol/server-filesystem /Users/me
+  stdio: bunx -y @modelcontextprotocol/server-filesystem /Users/me
 ✓ everything - Demo server with sample tools for testing
-  stdio: npx -y @modelcontextprotocol/server-everything
+  stdio: bunx -y @modelcontextprotocol/server-everything
 ✓ terminatui-docs - Terminatui documentation via GitMCP
   http: https://gitmcp.io/pablozaiden/terminatui
 ```
@@ -209,7 +209,7 @@ mcp config --action cache-clear
 
 ## Example Servers
 
-The default config includes these servers (all work with just `npx`):
+The default config includes these servers (all work with just `bunx`):
 
 | Server | Description |
 |--------|-------------|
