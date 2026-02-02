@@ -15,6 +15,8 @@ import {
   ensureConfigDir,
 } from "../config/loader";
 import { clearServerCache } from "../config/cache";
+import { spawn, execSync } from "child_process";
+import { existsSync } from "fs";
 import type { StdioServerConfig, HttpServerConfig } from "../config/types";
 
 // ============================================================================
@@ -410,7 +412,7 @@ class ListServersCommand extends Command<typeof listOptions> {
     // Pretty print to stdout
     const enabledCount = serverList.filter((s) => s.enabled).length;
     const totalCount = Object.keys(servers).length;
-    
+
     if (showAll) {
       console.log(`Configured servers: ${totalCount} (${enabledCount} enabled)\n`);
     } else {
@@ -449,8 +451,6 @@ class EditConfigCommand extends Command<typeof emptyOptions> {
   ];
 
   override async execute(): Promise<CommandResult> {
-    const { spawn } = await import("child_process");
-    const { existsSync } = await import("fs");
 
     // Ensure config directory exists
     ensureConfigDir();
@@ -564,7 +564,6 @@ class EditConfigCommand extends Command<typeof emptyOptions> {
 
   private commandExists(cmd: string): boolean {
     try {
-      const { execSync } = require("child_process");
       const checkCmd = process.platform === "win32" ? `where ${cmd}` : `which ${cmd}`;
       execSync(checkCmd, { stdio: "ignore" });
       return true;
