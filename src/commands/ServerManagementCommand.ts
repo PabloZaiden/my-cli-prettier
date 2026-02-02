@@ -593,25 +593,24 @@ class InitConfigCommand extends Command<typeof emptyOptions> {
 
   override async execute(): Promise<CommandResult> {
     const created = createExampleConfig();
-    const configPath = getConfigPath();
 
     if (created) {
-      console.log(`Created example config at ${configPath}`);
       return {
         success: true,
         data: {
-          configPath,
+          configPath: getConfigPath(),
           created: true,
         },
+        message: `Created example config at ${getConfigPath()}`,
       };
     } else {
-      console.log(`Config already exists at ${configPath}`);
       return {
         success: true,
         data: {
-          configPath,
+          configPath: getConfigPath(),
           created: false,
         },
+        message: `Config already exists at ${getConfigPath()}`,
       };
     }
   }
