@@ -17,7 +17,7 @@ export interface BaseServerConfig {
  */
 export interface StdioServerConfig extends BaseServerConfig {
   transport: "stdio";
-  /** Command to execute (e.g., "npx", "uvx", "python") */
+  /** Command to execute (e.g., "bunx", "uvx", "python") */
   command: string;
   /** Arguments to pass to the command */
   args?: string[];

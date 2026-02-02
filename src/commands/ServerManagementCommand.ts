@@ -32,7 +32,7 @@ const addStdioOptions = {
   },
   command: {
     type: "string",
-    description: "Command to execute (e.g., npx, uvx, python)",
+    description: "Command to execute (e.g., bunx, uvx, python)",
     required: true,
   },
   args: {
@@ -60,7 +60,7 @@ class AddStdioServerCommand extends Command<typeof addStdioOptions> {
 
   override examples = [
     {
-      command: 'mcp server add stdio --name memory --command npx --args "-y @modelcontextprotocol/server-memory"',
+      command: 'mcp server add stdio --name memory --command bunx --args "-y @modelcontextprotocol/server-memory"',
       description: "Add the memory server",
     },
     {
