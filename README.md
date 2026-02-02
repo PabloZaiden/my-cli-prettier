@@ -1,12 +1,251 @@
-# My CLI is Prettier (than you MCP server)
+# my-cli-prettier
 
-My CLI is Prettier (than your MCP server) is a CLI tool to expose MCP server operations via a CLI
+A CLI tool that exposes MCP (Model Context Protocol) servers as local command-line tools.
 
-## Motivation
+## Why?
 
-While MCP servers allow agents to interact with external systems, pulling more than a few of them into the context of an Agent can degrade its performance and reliability.
+MCP servers let AI agents interact with external systems, but loading many servers into an agent's context can degrade performance. This tool provides a different approach:
 
-For tasks that involve frequent tool discovery and very open-ended goals, having local CLIs that the Agent can explore, discover, and use can be a more effective approach.
+- **Discoverable**: Agents can explore available servers and tools via `--help`
+- **Lightweight**: Only the tools you call are loaded, not the entire MCP ecosystem
+- **Familiar**: Standard CLI interface that any agent (or human) can use
 
-For those kinds of scenarios, this tool allows you to expose MCP server operations via a local CLI that the Agent can discover and use, without bloating the context with hundreds of MCP server tools.
+## Quick Start
 
+```bash
+# Clone and install
+git clone https://github.com/pablozaiden/my-cli-prettier.git
+cd my-cli-prettier
+bun install
+
+# Initialize config with example servers
+bun start -- config --action init
+
+# List available servers
+bun start -- servers
+
+# Explore a server's tools
+bun start -- everything help
+
+# Call a tool
+bun start -- everything echo --message "Hello MCP!"
+```
+
+## Installation
+
+### Prerequisites
+
+- [Bun](https://bun.sh) (recommended) or Node.js with npx
+
+### Run from source
+
+```bash
+bun install
+bun start -- <command>
+```
+
+### Compile to binary
+
+```bash
+npm run compile
+./out/my-cli-prettier <command>
+```
+
+## Configuration
+
+Config is stored at `~/.my-cli-prettier/config.json`:
+
+```json
+{
+  "servers": {
+    "memory": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "description": "Simple key-value memory store"
+    },
+    "my-docs": {
+      "transport": "http",
+      "url": "https://gitmcp.io/myuser/myrepo",
+      "description": "Documentation server"
+    }
+  },
+  "settings": {
+    "cacheEnabled": true,
+    "cacheTtlMs": 14400000
+  }
+}
+```
+
+### Server Types
+
+**Stdio servers** - Local processes:
+```json
+{
+  "transport": "stdio",
+  "command": "npx",
+  "args": ["-y", "@modelcontextprotocol/server-memory"],
+  "env": { "API_KEY": "$MY_API_KEY" },
+  "description": "Optional description",
+  "enabled": true
+}
+```
+
+**HTTP servers** - Remote endpoints:
+```json
+{
+  "transport": "http",
+  "url": "https://example.com/mcp",
+  "headers": { "Authorization": "Bearer $TOKEN" },
+  "description": "Optional description"
+}
+```
+
+Environment variables in the format `$VAR_NAME` are automatically resolved.
+
+## Usage
+
+### List servers
+
+```bash
+my-cli-prettier servers
+```
+
+Output:
+```
+Configured servers: 4 (4 enabled)
+
+✓ memory - Simple key-value memory store
+✓ filesystem - File system operations
+✓ everything - Demo server with sample tools for testing
+✓ terminatui-docs - Terminatui documentation via GitMCP
+```
+
+Use `--json` for machine-readable output.
+
+### Explore server tools
+
+```bash
+my-cli-prettier <server> help
+```
+
+Example:
+```bash
+my-cli-prettier everything help
+```
+
+### Call a tool
+
+```bash
+my-cli-prettier <server> <tool> [options]
+```
+
+Examples:
+```bash
+# Echo a message
+my-cli-prettier everything echo --message "Hello!"
+
+# Sum two numbers
+my-cli-prettier everything get-sum --a 10 --b 20
+
+# List files
+my-cli-prettier filesystem list_directory --path "/Users/me/projects"
+
+# Search documentation
+my-cli-prettier terminatui-docs search_terminatui_documentation --query "TuiApplication"
+```
+
+### Get tool help
+
+```bash
+my-cli-prettier <server> <tool> help
+```
+
+### Manage configuration
+
+```bash
+# Show current config
+my-cli-prettier config
+
+# Initialize example config
+my-cli-prettier config --action init
+
+# Clear tool cache
+my-cli-prettier config --action cache-clear
+```
+
+### Manage servers
+
+Add, remove, enable, or disable servers without editing the config file:
+
+```bash
+# Add a stdio-based server (local process)
+my-cli-prettier server add stdio --name memory --command npx --args "-y @modelcontextprotocol/server-memory" --description "Memory store"
+
+# Add an HTTP-based server (remote endpoint)
+my-cli-prettier server add http --name docs --url "https://gitmcp.io/user/repo" --description "Documentation"
+
+# Disable a server (keeps configuration)
+my-cli-prettier server disable --name memory
+
+# Enable a server
+my-cli-prettier server enable --name memory
+
+# Remove a server completely
+my-cli-prettier server remove --name memory
+
+# List all servers with details
+my-cli-prettier server list
+
+# Open config file in your editor
+my-cli-prettier server edit
+```
+
+## Caching
+
+Tool definitions are cached for 4 hours by default to avoid reconnecting to servers on every command. The cache is stored at `~/.my-cli-prettier/cache/`.
+
+To refresh tools from a server, clear the cache:
+```bash
+my-cli-prettier config --action cache-clear
+```
+
+## Example Servers
+
+The default config includes these servers (all work with just `npx`):
+
+| Server | Description |
+|--------|-------------|
+| `memory` | Knowledge graph / key-value store |
+| `filesystem` | File system operations |
+| `everything` | Demo server with 13 sample tools |
+| `terminatui-docs` | Remote documentation server (HTTP) |
+
+## For AI Agents
+
+This tool is designed to be easily discoverable by AI agents:
+
+```bash
+# Agent discovers available servers
+my-cli-prettier servers
+
+# Agent explores a server
+my-cli-prettier filesystem help
+
+# Agent gets help on a specific tool
+my-cli-prettier filesystem read_text_file help
+
+# Agent calls the tool
+my-cli-prettier filesystem read_text_file --path "/path/to/file.txt"
+```
+
+All output is JSON by default when data is returned, making it easy to parse programmatically.
+
+## Built With
+
+- [Terminatui](https://github.com/pablozaiden/terminatui) - CLI/TUI framework
+- [MCP SDK](https://github.com/modelcontextprotocol/typescript-sdk) - Model Context Protocol client
+
+## License
+
+MIT

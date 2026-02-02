@@ -192,6 +192,94 @@ export function getServerConfig(name: string): ServerConfig | undefined {
 }
 
 /**
+ * Adds a new server to the configuration.
+ * Returns true if the server was added, false if it already exists.
+ */
+export function addServer(name: string, serverConfig: ServerConfig): boolean {
+  const config = loadConfig();
+
+  if (config.servers[name]) {
+    return false;
+  }
+
+  config.servers[name] = serverConfig;
+  saveConfig(config);
+  return true;
+}
+
+/**
+ * Updates an existing server in the configuration.
+ * Returns true if the server was updated, false if it doesn't exist.
+ */
+export function updateServer(name: string, serverConfig: ServerConfig): boolean {
+  const config = loadConfig();
+
+  if (!config.servers[name]) {
+    return false;
+  }
+
+  config.servers[name] = serverConfig;
+  saveConfig(config);
+  return true;
+}
+
+/**
+ * Removes a server from the configuration.
+ * Returns true if the server was removed, false if it doesn't exist.
+ */
+export function removeServer(name: string): boolean {
+  const config = loadConfig();
+
+  if (!config.servers[name]) {
+    return false;
+  }
+
+  delete config.servers[name];
+  saveConfig(config);
+  return true;
+}
+
+/**
+ * Enables a server in the configuration.
+ * Returns true if the server was enabled, false if it doesn't exist.
+ */
+export function enableServer(name: string): boolean {
+  const config = loadConfig();
+
+  if (!config.servers[name]) {
+    return false;
+  }
+
+  config.servers[name].enabled = true;
+  saveConfig(config);
+  return true;
+}
+
+/**
+ * Disables a server in the configuration.
+ * Returns true if the server was disabled, false if it doesn't exist.
+ */
+export function disableServer(name: string): boolean {
+  const config = loadConfig();
+
+  if (!config.servers[name]) {
+    return false;
+  }
+
+  config.servers[name].enabled = false;
+  saveConfig(config);
+  return true;
+}
+
+/**
+ * Gets all servers from the configuration (including disabled).
+ */
+export function getAllServers(): Record<string, ServerConfig> {
+  const config = loadConfig();
+  return config.servers;
+}
+
+/**
  * Creates an example configuration file if none exists.
  */
 export function createExampleConfig(): boolean {

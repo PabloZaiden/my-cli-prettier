@@ -20,11 +20,6 @@ export class ServersCommand extends Command<typeof serversOptions> {
   override options = serversOptions;
   override displayName = "List Servers";
 
-  // Always run in CLI mode - no interactive TUI
-  override supportsTui(): boolean {
-    return false;
-  }
-
   override async execute(config: OptionValues<typeof serversOptions>): Promise<CommandResult> {
     const fullConfig = loadConfig();
     const allServers = fullConfig.servers;

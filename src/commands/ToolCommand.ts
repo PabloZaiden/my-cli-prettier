@@ -25,11 +25,6 @@ export function createToolCommand(
     override options = optionSchema;
     override actionLabel = "Execute";
 
-    // MCP tools should always run in CLI mode - no interactive TUI
-    override supportsTui(): boolean {
-      return false;
-    }
-
     override async execute(
       config: OptionValues<typeof optionSchema>,
       _execCtx?: CommandExecutionContext

@@ -4,6 +4,7 @@ import { getEnabledServers, resolveServerConfig } from "./config/loader";
 import { getCachedTools } from "./config/cache";
 import { ServersCommand } from "./commands/ServersCommand";
 import { SettingsCommand } from "./commands/SettingsCommand";
+import { ServerManagementCommand } from "./commands/ServerManagementCommand";
 import { createServerCommand } from "./commands/ServerCommand";
 
 /**
@@ -17,6 +18,7 @@ function buildCommands(): Command[] {
   // Add static commands
   commands.push(new ServersCommand());
   commands.push(new SettingsCommand());
+  commands.push(new ServerManagementCommand());
 
   // Load config and add dynamic server commands
   try {

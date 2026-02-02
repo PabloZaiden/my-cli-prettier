@@ -22,11 +22,6 @@ export class SettingsCommand extends Command<typeof settingsOptions> {
   override options = settingsOptions;
   override displayName = "Config";
 
-  // Always run in CLI mode - no interactive TUI
-  override supportsTui(): boolean {
-    return false;
-  }
-
   override examples = [
     { command: "my-cli-prettier config", description: "Show current configuration" },
     { command: "my-cli-prettier config --action cache-enable", description: "Enable caching" },

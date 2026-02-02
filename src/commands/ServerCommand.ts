@@ -43,11 +43,6 @@ export function createServerCommand(
     override options = serverOptions;
     override subCommands: Command[] = [];
 
-    // No TUI support for server commands
-    override supportsTui(): boolean {
-      return false;
-    }
-
     private toolsLoaded = false;
 
     constructor() {
