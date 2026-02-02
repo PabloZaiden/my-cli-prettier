@@ -22,7 +22,7 @@ bun install
 bun start -- config --action init
 
 # List available servers
-bun start -- servers
+bun start -- server list
 
 # Explore a server's tools
 bun start -- everything help
@@ -105,20 +105,46 @@ Environment variables in the format `$VAR_NAME` are automatically resolved.
 
 ## Usage
 
-### List servers
+### Manage servers
 
 ```bash
-my-cli-prettier servers
+# List enabled servers
+my-cli-prettier server list
+
+# List all servers including disabled
+my-cli-prettier server list --all
+
+# Add a stdio-based server (local process)
+my-cli-prettier server add stdio --name memory --command npx --args "-y @modelcontextprotocol/server-memory" --description "Memory store"
+
+# Add an HTTP-based server (remote endpoint)
+my-cli-prettier server add http --name docs --url "https://gitmcp.io/user/repo" --description "Documentation"
+
+# Disable a server (keeps configuration)
+my-cli-prettier server disable --name memory
+
+# Enable a server
+my-cli-prettier server enable --name memory
+
+# Remove a server completely
+my-cli-prettier server remove --name memory
+
+# Open config file in your editor
+my-cli-prettier server edit
 ```
 
-Output:
+Output of `server list`:
 ```
-Configured servers: 4 (4 enabled)
+Enabled servers: 4
 
 ✓ memory - Simple key-value memory store
+  stdio: npx -y @modelcontextprotocol/server-memory
 ✓ filesystem - File system operations
+  stdio: npx -y @modelcontextprotocol/server-filesystem /Users/me
 ✓ everything - Demo server with sample tools for testing
+  stdio: npx -y @modelcontextprotocol/server-everything
 ✓ terminatui-docs - Terminatui documentation via GitMCP
+  http: https://gitmcp.io/pablozaiden/terminatui
 ```
 
 Use `--json` for machine-readable output.
@@ -174,33 +200,6 @@ my-cli-prettier config --action init
 my-cli-prettier config --action cache-clear
 ```
 
-### Manage servers
-
-Add, remove, enable, or disable servers without editing the config file:
-
-```bash
-# Add a stdio-based server (local process)
-my-cli-prettier server add stdio --name memory --command npx --args "-y @modelcontextprotocol/server-memory" --description "Memory store"
-
-# Add an HTTP-based server (remote endpoint)
-my-cli-prettier server add http --name docs --url "https://gitmcp.io/user/repo" --description "Documentation"
-
-# Disable a server (keeps configuration)
-my-cli-prettier server disable --name memory
-
-# Enable a server
-my-cli-prettier server enable --name memory
-
-# Remove a server completely
-my-cli-prettier server remove --name memory
-
-# List all servers with details
-my-cli-prettier server list
-
-# Open config file in your editor
-my-cli-prettier server edit
-```
-
 ## Caching
 
 Tool definitions are cached for 4 hours by default to avoid reconnecting to servers on every command. The cache is stored at `~/.my-cli-prettier/cache/`.
@@ -227,7 +226,7 @@ This tool is designed to be easily discoverable by AI agents:
 
 ```bash
 # Agent discovers available servers
-my-cli-prettier servers
+my-cli-prettier server list
 
 # Agent explores a server
 my-cli-prettier filesystem help

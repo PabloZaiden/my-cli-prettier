@@ -2,23 +2,21 @@ import { AppContext, TuiApplication, type SupportedMode, type Command } from "@p
 import pkg from "../package.json";
 import { getEnabledServers, resolveServerConfig } from "./config/loader";
 import { getCachedTools } from "./config/cache";
-import { ServersCommand } from "./commands/ServersCommand";
 import { SettingsCommand } from "./commands/SettingsCommand";
 import { ServerManagementCommand } from "./commands/ServerManagementCommand";
 import { createServerCommand } from "./commands/ServerCommand";
 
 /**
  * Builds the list of commands for the CLI.
- * This includes static commands (servers, settings) and dynamic commands
+ * This includes static commands (server, config) and dynamic commands
  * for each enabled MCP server in the configuration.
  */
 function buildCommands(): Command[] {
   const commands: Command[] = [];
 
   // Add static commands
-  commands.push(new ServersCommand());
-  commands.push(new SettingsCommand());
   commands.push(new ServerManagementCommand());
+  commands.push(new SettingsCommand());
 
   // Load config and add dynamic server commands
   try {
