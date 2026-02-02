@@ -57,11 +57,11 @@ class AddStdioServerCommand extends Command<typeof addStdioOptions> {
 
   override examples = [
     {
-      command: 'my-cli-prettier server add stdio --name memory --command npx --args "-y @modelcontextprotocol/server-memory"',
+      command: 'mcp server add stdio --name memory --command npx --args "-y @modelcontextprotocol/server-memory"',
       description: "Add the memory server",
     },
     {
-      command: 'my-cli-prettier server add stdio --name myserver --command python --args "-m my_mcp_server" --description "My custom server"',
+      command: 'mcp server add stdio --name myserver --command python --args "-m my_mcp_server" --description "My custom server"',
       description: "Add a Python-based server",
     },
   ];
@@ -134,7 +134,7 @@ class AddHttpServerCommand extends Command<typeof addHttpOptions> {
 
   override examples = [
     {
-      command: 'my-cli-prettier server add http --name docs --url "https://gitmcp.io/user/repo" --description "Documentation server"',
+      command: 'mcp server add http --name docs --url "https://gitmcp.io/user/repo" --description "Documentation server"',
       description: "Add a GitMCP documentation server",
     },
   ];
@@ -204,7 +204,7 @@ class RemoveServerCommand extends Command<typeof removeOptions> {
 
   override examples = [
     {
-      command: "my-cli-prettier server remove --name memory",
+      command: "mcp server remove --name memory",
       description: "Remove the memory server",
     },
   ];
@@ -261,7 +261,7 @@ class EnableServerCommand extends Command<typeof enableOptions> {
 
   override examples = [
     {
-      command: "my-cli-prettier server enable --name memory",
+      command: "mcp server enable --name memory",
       description: "Enable the memory server",
     },
   ];
@@ -315,7 +315,7 @@ class DisableServerCommand extends Command<typeof disableOptions> {
 
   override examples = [
     {
-      command: "my-cli-prettier server disable --name memory",
+      command: "mcp server disable --name memory",
       description: "Disable the memory server",
     },
   ];
@@ -443,7 +443,7 @@ class EditConfigCommand extends Command<typeof emptyOptions> {
 
   override examples = [
     {
-      command: "my-cli-prettier server edit",
+      command: "mcp server edit",
       description: "Open config in default editor",
     },
   ];
@@ -460,7 +460,7 @@ class EditConfigCommand extends Command<typeof emptyOptions> {
     if (!existsSync(configPath)) {
       return {
         success: false,
-        error: `Config file does not exist. Run 'my-cli-prettier config --action init' first to create it.`,
+        error: `Config file does not exist. Run 'mcp config --action init' first to create it.`,
       };
     }
 

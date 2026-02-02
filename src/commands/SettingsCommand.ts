@@ -23,11 +23,11 @@ export class SettingsCommand extends Command<typeof settingsOptions> {
   override displayName = "Config";
 
   override examples = [
-    { command: "my-cli-prettier config", description: "Show current configuration" },
-    { command: "my-cli-prettier config --action cache-enable", description: "Enable caching" },
-    { command: "my-cli-prettier config --action cache-disable", description: "Disable caching" },
-    { command: "my-cli-prettier config --action cache-clear", description: "Clear all cached data" },
-    { command: "my-cli-prettier config --action init", description: "Create example config file" },
+    { command: "mcp config", description: "Show current configuration" },
+    { command: "mcp config --action cache-enable", description: "Enable caching" },
+    { command: "mcp config --action cache-disable", description: "Disable caching" },
+    { command: "mcp config --action cache-clear", description: "Clear all cached data" },
+    { command: "mcp config --action init", description: "Create example config file" },
   ];
 
   override async execute(config: OptionValues<typeof settingsOptions>): Promise<CommandResult> {

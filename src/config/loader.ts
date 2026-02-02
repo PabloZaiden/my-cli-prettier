@@ -1,40 +1,32 @@
 /**
  * Configuration loader for the MCP CLI tool.
- * Handles loading config from ~/.my-cli-prettier/config.json and resolving environment variables.
+ * Handles loading config from config.json in the application config directory and resolving environment variables.
  */
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
-import { homedir } from "os";
 import { join } from "path";
 import { DEFAULT_SETTINGS, type CliSettings, type McpCliConfig, type ServerConfig } from "./types";
-
-/**
- * Gets the path to the configuration directory.
- * Uses ~/.my-cli-prettier to match terminatui convention ($HOME/.<app-name>).
- */
-export function getConfigDir(): string {
-  return join(homedir(), ".my-cli-prettier");
-}
+import { AppContext } from "@pablozaiden/terminatui";
 
 /**
  * Gets the path to the main configuration file.
  */
 export function getConfigPath(): string {
-  return join(getConfigDir(), "config.json");
+  return join(AppContext.current.getConfigDir(), "config.json");
 }
 
 /**
  * Gets the path to the cache directory.
  */
 export function getCacheDir(): string {
-  return join(getConfigDir(), "cache");
+  return join(AppContext.current.getConfigDir(), "cache");
 }
 
 /**
  * Ensures the config directory exists.
  */
 export function ensureConfigDir(): void {
-  const configDir = getConfigDir();
+  const configDir = AppContext.current.getConfigDir();
   if (!existsSync(configDir)) {
     mkdirSync(configDir, { recursive: true });
   }

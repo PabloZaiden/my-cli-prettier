@@ -48,7 +48,7 @@ bun start -- <command>
 
 ```bash
 npm run compile
-./out/my-cli-prettier <command>
+./out/mcp <command>
 ```
 
 ## Configuration
@@ -109,28 +109,27 @@ Environment variables in the format `$VAR_NAME` are automatically resolved.
 
 ```bash
 # List enabled servers
-my-cli-prettier server list
+mcp server list
 
 # List all servers including disabled
-my-cli-prettier server list --all
+mcp server list --all
 
 # Add a stdio-based server (local process)
-my-cli-prettier server add stdio --name memory --command npx --args "-y @modelcontextprotocol/server-memory" --description "Memory store"
+mcp server add stdio --name memory --command npx --args "-y @modelcontextprotocol/server-memory" --description "Memory store"
 
 # Add an HTTP-based server (remote endpoint)
-my-cli-prettier server add http --name docs --url "https://gitmcp.io/user/repo" --description "Documentation"
+mcp server add http --name docs --url "https://gitmcp.io/user/repo" --description "Documentation"
 
 # Disable a server (keeps configuration)
-my-cli-prettier server disable --name memory
+mcp server disable --name memory
 
 # Enable a server
-my-cli-prettier server enable --name memory
-
+mcp server enable --name memory
 # Remove a server completely
-my-cli-prettier server remove --name memory
+mcp server remove --name memory
 
 # Open config file in your editor
-my-cli-prettier server edit
+mcp server edit
 ```
 
 Output of `server list`:
@@ -152,52 +151,51 @@ Use `--json` for machine-readable output.
 ### Explore server tools
 
 ```bash
-my-cli-prettier <server> help
+mcp <server> help
 ```
 
 Example:
 ```bash
-my-cli-prettier everything help
+mcp everything help
 ```
 
 ### Call a tool
 
 ```bash
-my-cli-prettier <server> <tool> [options]
+mcp <server> <tool> [options]
 ```
 
 Examples:
 ```bash
 # Echo a message
-my-cli-prettier everything echo --message "Hello!"
+mcp everything echo --message "Hello!"
 
 # Sum two numbers
-my-cli-prettier everything get-sum --a 10 --b 20
-
+mcp everything get-sum --a 10 --b 20
 # List files
-my-cli-prettier filesystem list_directory --path "/Users/me/projects"
+mcp filesystem list_directory --path "/Users/me/projects"
 
 # Search documentation
-my-cli-prettier terminatui-docs search_terminatui_documentation --query "TuiApplication"
+mcp terminatui-docs search_terminatui_documentation --query "TuiApplication"
 ```
 
 ### Get tool help
 
 ```bash
-my-cli-prettier <server> <tool> help
+mcp <server> <tool> help
 ```
 
 ### Manage configuration
 
 ```bash
 # Show current config
-my-cli-prettier config
+mcp config
 
 # Initialize example config
-my-cli-prettier config --action init
+mcp config --action init
 
 # Clear tool cache
-my-cli-prettier config --action cache-clear
+mcp config --action cache-clear
 ```
 
 ## Caching
@@ -206,7 +204,7 @@ Tool definitions are cached for 4 hours by default to avoid reconnecting to serv
 
 To refresh tools from a server, clear the cache:
 ```bash
-my-cli-prettier config --action cache-clear
+mcp config --action cache-clear
 ```
 
 ## Example Servers
@@ -226,16 +224,16 @@ This tool is designed to be easily discoverable by AI agents:
 
 ```bash
 # Agent discovers available servers
-my-cli-prettier server list
+mcp server list
 
 # Agent explores a server
-my-cli-prettier filesystem help
+mcp filesystem help
 
 # Agent gets help on a specific tool
-my-cli-prettier filesystem read_text_file help
+mcp filesystem read_text_file help
 
 # Agent calls the tool
-my-cli-prettier filesystem read_text_file --path "/path/to/file.txt"
+mcp filesystem read_text_file --path "/path/to/file.txt"
 ```
 
 All output is JSON by default when data is returned, making it easy to parse programmatically.
