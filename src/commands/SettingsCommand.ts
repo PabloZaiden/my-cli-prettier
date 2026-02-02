@@ -3,16 +3,16 @@
  */
 
 import { Command, type CommandResult, type OptionSchema, type OptionValues } from "@pablozaiden/terminatui";
-import { getSettings, updateSettings, getConfigPath, createExampleConfig } from "../config/loader";
+import { getSettings, updateSettings, getConfigPath } from "../config/loader";
 import { clearAllCache, getCacheStats } from "../config/cache";
 
 const settingsOptions = {
   action: {
     type: "string",
-    description: "Action to perform: show, cache-enable, cache-disable, cache-clear, init",
+    description: "Action to perform: show, cache-enable, cache-disable, cache-clear",
     required: false,
     default: "show",
-    enum: ["show", "cache-enable", "cache-disable", "cache-clear", "init"],
+    enum: ["show", "cache-enable", "cache-disable", "cache-clear"],
   },
 } satisfies OptionSchema;
 
@@ -27,7 +27,6 @@ export class SettingsCommand extends Command<typeof settingsOptions> {
     { command: "mcp config --action cache-enable", description: "Enable caching" },
     { command: "mcp config --action cache-disable", description: "Disable caching" },
     { command: "mcp config --action cache-clear", description: "Clear all cached data" },
-    { command: "mcp config --action init", description: "Create example config file" },
   ];
 
   override async execute(config: OptionValues<typeof settingsOptions>): Promise<CommandResult> {
@@ -42,8 +41,6 @@ export class SettingsCommand extends Command<typeof settingsOptions> {
         return this.disableCache();
       case "cache-clear":
         return this.clearCache();
-      case "init":
-        return this.initConfig();
       default:
         return {
           success: false,
@@ -109,29 +106,5 @@ export class SettingsCommand extends Command<typeof settingsOptions> {
       },
       message: `Cleared ${clearedCount} cached server(s)`,
     };
-  }
-
-  private initConfig(): CommandResult {
-    const created = createExampleConfig();
-
-    if (created) {
-      return {
-        success: true,
-        data: {
-          configPath: getConfigPath(),
-          created: true,
-        },
-        message: `Created example config at ${getConfigPath()}`,
-      };
-    } else {
-      return {
-        success: true,
-        data: {
-          configPath: getConfigPath(),
-          created: false,
-        },
-        message: `Config already exists at ${getConfigPath()}`,
-      };
-    }
   }
 }

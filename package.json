@@ -29,7 +29,7 @@
     "@pablozaiden/terminatui": "0.6.1"
   },
   "scripts": {
-    "start": "bun install; bun run src/index.ts",
+    "start": "bun run src/index.ts",
     "start:interactive": "bun run src/index.ts interactive",
     "build": "bunx tsc --noEmit",
     "compile": "export workspace_dir=$(pwd); export build_output=$(mktemp); bun install; (cd /tmp; bun build --compile --outfile=$build_output $workspace_dir/src/index.ts; mkdir -p $workspace_dir/out; mv $build_output $workspace_dir/out/mcp);",

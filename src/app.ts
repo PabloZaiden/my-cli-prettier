@@ -92,7 +92,7 @@ export class MyCLIPrettierApp extends TuiApplication {
 
   constructor(commands: Command[]) {
     super({
-      name: "my-cli-prettier",
+      name: "mcp",
       displayName: "MCP CLI",
       version: pkg.version,
       commitHash: pkg.config?.commitHash,

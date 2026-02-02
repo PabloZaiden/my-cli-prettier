@@ -192,7 +192,7 @@ mcp <server> <tool> help
 mcp config
 
 # Initialize example config
-mcp config --action init
+mcp server init
 
 # Clear tool cache
 mcp config --action cache-clear

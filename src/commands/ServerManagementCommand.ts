@@ -13,6 +13,7 @@ import {
   getAllServers,
   getConfigPath,
   ensureConfigDir,
+  createExampleConfig,
 } from "../config/loader";
 import { clearServerCache } from "../config/cache";
 import { spawn, execSync } from "child_process";
@@ -574,6 +575,49 @@ class EditConfigCommand extends Command<typeof emptyOptions> {
 }
 
 // ============================================================================
+// Init Config Command
+// ============================================================================
+
+class InitConfigCommand extends Command<typeof emptyOptions> {
+  override name = "init";
+  override description = "Create an example config file with sample servers";
+  override displayName = "Initialize Config";
+  override options = emptyOptions;
+
+  override examples = [
+    {
+      command: "mcp server init",
+      description: "Create example config with sample MCP servers",
+    },
+  ];
+
+  override async execute(): Promise<CommandResult> {
+    const created = createExampleConfig();
+    const configPath = getConfigPath();
+
+    if (created) {
+      console.log(`Created example config at ${configPath}`);
+      return {
+        success: true,
+        data: {
+          configPath,
+          created: true,
+        },
+      };
+    } else {
+      console.log(`Config already exists at ${configPath}`);
+      return {
+        success: true,
+        data: {
+          configPath,
+          created: false,
+        },
+      };
+    }
+  }
+}
+
+// ============================================================================
 // Main Server Management Command
 // ============================================================================
 
@@ -586,6 +630,7 @@ export class ServerManagementCommand extends Command<typeof emptyOptions> {
   override displayName = "Server Management";
   override options = emptyOptions;
   override subCommands = [
+    new InitConfigCommand(),
     new AddServerCommand(),
     new RemoveServerCommand(),
     new EnableServerCommand(),
