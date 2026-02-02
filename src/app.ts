@@ -1,17 +1,42 @@
 import { AppContext, TuiApplication, type SupportedMode, type Command } from "@pablozaiden/terminatui";
 import pkg from "../package.json";
 import { getEnabledServers, resolveServerConfig } from "./config/loader";
-import { getCachedTools } from "./config/cache";
+import { getCachedTools, setCachedTools } from "./config/cache";
 import { SettingsCommand } from "./commands/SettingsCommand";
 import { ServerManagementCommand } from "./commands/ServerManagementCommand";
 import { createServerCommand } from "./commands/ServerCommand";
+import { McpClientSession } from "./mcp/client";
+import type { Tool } from "@modelcontextprotocol/sdk/types.js";
+
+/**
+ * Fetches tools from a server and caches them.
+ */
+async function fetchAndCacheTools(
+  serverName: string,
+  serverConfig: ReturnType<typeof resolveServerConfig>
+): Promise<Tool[]> {
+  try {
+    const session = new McpClientSession(serverName, serverConfig);
+    const tools = await session.getTools();
+    const serverInfo = await session.getServerInfo();
+    setCachedTools(serverName, tools, serverInfo);
+    return tools;
+  } catch (error) {
+    console.error(
+      `Warning: Failed to fetch tools from ${serverName}: ${error instanceof Error ? error.message : String(error)}`
+    );
+    return [];
+  }
+}
 
 /**
  * Builds the list of commands for the CLI.
  * This includes static commands (server, config) and dynamic commands
  * for each enabled MCP server in the configuration.
+ * 
+ * If tools aren't cached, fetches them from the server (first run will be slower).
  */
-function buildCommands(): Command[] {
+async function buildCommands(): Promise<Command[]> {
   const commands: Command[] = [];
 
   // Add static commands
@@ -22,36 +47,56 @@ function buildCommands(): Command[] {
   try {
     const enabledServers = getEnabledServers();
 
-    for (const [serverName, serverConfig] of Object.entries(enabledServers)) {
-      // Resolve environment variables in the config
+    // Fetch tools for all servers in parallel
+    const serverEntries = Object.entries(enabledServers);
+    const toolsPromises = serverEntries.map(async ([serverName, serverConfig]) => {
       const resolvedConfig = resolveServerConfig(serverConfig);
+      
+      // Check cache first
+      let tools = getCachedTools(serverName);
+      
+      // If not cached, fetch from server
+      if (!tools) {
+        tools = await fetchAndCacheTools(serverName, resolvedConfig);
+      }
+      
+      return { serverName, resolvedConfig, tools };
+    });
 
-      // Check for cached tools to pre-populate subcommands
-      const cachedTools = getCachedTools(serverName);
+    const serversWithTools = await Promise.all(toolsPromises);
 
-      // Create the dynamic server command
-      const serverCommand = createServerCommand(serverName, resolvedConfig, cachedTools || undefined);
+    // Create commands for each server
+    for (const { serverName, resolvedConfig, tools } of serversWithTools) {
+      const serverCommand = createServerCommand(serverName, resolvedConfig, tools.length > 0 ? tools : undefined);
       commands.push(serverCommand);
     }
   } catch (error) {
     // Config loading failed - commands will just be the static ones
-    // Error will be shown when user tries to use server commands
     console.error(`Warning: Failed to load MCP server config: ${error instanceof Error ? error.message : String(error)}`);
   }
 
   return commands;
 }
 
+/**
+ * Creates and returns a configured MyCLIPrettierApp instance.
+ * This is async because it needs to fetch tools from servers if not cached.
+ */
+export async function createApp(): Promise<MyCLIPrettierApp> {
+  const commands = await buildCommands();
+  return new MyCLIPrettierApp(commands);
+}
+
 export class MyCLIPrettierApp extends TuiApplication {
   protected override defaultMode: SupportedMode = "cli";
 
-  constructor() {
+  constructor(commands: Command[]) {
     super({
       name: "my-cli-prettier",
       displayName: "MCP CLI",
       version: pkg.version,
       commitHash: pkg.config?.commitHash,
-      commands: buildCommands(),
+      commands,
 
       logger: {
         detailed: false,

@@ -17,7 +17,7 @@ const serverOptions = {} satisfies OptionSchema;
 /**
  * Creates a dynamic Command for an MCP server.
  * This command has no direct action - it's a parent for tool subcommands.
- * Running it without a tool subcommand will show a message to use help.
+ * Running it without a tool subcommand will show help via terminatui.
  */
 export function createServerCommand(
   serverName: string,

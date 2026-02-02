@@ -1,4 +1,4 @@
-import { MyCLIPrettierApp } from "./app";
+import { createApp } from "./app";
 
-const app = new MyCLIPrettierApp();
+const app = await createApp();
 await app.run();
