@@ -64,10 +64,11 @@ Config is stored at `~/.my-cli-prettier/config.json`:
       "args": ["-y", "@modelcontextprotocol/server-memory"],
       "description": "Simple key-value memory store"
     },
-    "my-docs": {
-      "transport": "http",
-      "url": "https://gitmcp.io/myuser/myrepo",
-      "description": "Documentation server"
+    "fetch": {
+      "transport": "stdio",
+      "command": "bunx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "description": "Fetch and convert web content"
     }
   },
   "settings": {
@@ -118,7 +119,7 @@ mcp server list --all
 mcp server add stdio --name memory --command bunx --args "-y @modelcontextprotocol/server-memory" --description "Memory store"
 
 # Add an HTTP-based server (remote endpoint)
-mcp server add http --name docs --url "https://gitmcp.io/user/repo" --description "Documentation"
+mcp server add http --name api --url "https://api.example.com/mcp" --description "Remote API"
 
 # Disable a server (keeps configuration)
 mcp server disable --name memory
@@ -134,7 +135,7 @@ mcp server edit
 
 Output of `server list`:
 ```
-Enabled servers: 4
+Enabled servers: 5
 
 ✓ memory - Simple key-value memory store
   stdio: bunx -y @modelcontextprotocol/server-memory
@@ -142,8 +143,10 @@ Enabled servers: 4
   stdio: bunx -y @modelcontextprotocol/server-filesystem /Users/me
 ✓ everything - Demo server with sample tools for testing
   stdio: bunx -y @modelcontextprotocol/server-everything
-✓ terminatui-docs - Terminatui documentation via GitMCP
-  http: https://gitmcp.io/pablozaiden/terminatui
+✓ fetch - Fetch and convert web content for LLM usage
+  stdio: bunx -y @modelcontextprotocol/server-fetch
+✓ time - Time and timezone conversion capabilities
+  stdio: bunx -y @anthropic-ai/server-time
 ```
 
 Use `--json` for machine-readable output.
@@ -175,8 +178,11 @@ mcp everything get-sum --a 10 --b 20
 # List files
 mcp filesystem list_directory --path "/Users/me/projects"
 
-# Search documentation
-mcp terminatui-docs search_terminatui_documentation --query "TuiApplication"
+# Fetch a web page
+mcp fetch fetch --url "https://example.com"
+
+# Get current time
+mcp time get_current_time
 ```
 
 ### Get tool help
@@ -216,7 +222,8 @@ The default config includes these servers (all work with just `bunx`):
 | `memory` | Knowledge graph / key-value store |
 | `filesystem` | File system operations |
 | `everything` | Demo server with 13 sample tools |
-| `terminatui-docs` | Remote documentation server (HTTP) |
+| `fetch` | Web content fetching and conversion |
+| `time` | Time and timezone conversion |
 
 ## For AI Agents
 
