@@ -137,8 +137,8 @@ class AddHttpServerCommand extends Command<typeof addHttpOptions> {
 
   override examples = [
     {
-      command: 'mcp server add http --name docs --url "https://gitmcp.io/user/repo" --description "Documentation server"',
-      description: "Add a GitMCP documentation server",
+      command: 'mcp server add http --name api --url "https://api.example.com/mcp" --description "Remote API server"',
+      description: "Add a remote HTTP MCP server",
     },
   ];
 

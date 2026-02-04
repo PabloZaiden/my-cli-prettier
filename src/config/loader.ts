@@ -304,11 +304,19 @@ export function createExampleConfig(): boolean {
         args: ["-y", "@modelcontextprotocol/server-everything"],
         description: "Demo server with sample tools for testing",
       },
-      // HTTP-based server (no local install needed)
-      "terminatui-docs": {
-        transport: "http",
-        url: "https://gitmcp.io/pablozaiden/terminatui",
-        description: "Terminatui documentation via GitMCP",
+      // Fetch server - web content fetching and conversion
+      fetch: {
+        transport: "stdio",
+        command: "bunx",
+        args: ["-y", "@modelcontextprotocol/server-fetch"],
+        description: "Fetch and convert web content for LLM usage",
+      },
+      // Time server - time and timezone conversion
+      time: {
+        transport: "stdio",
+        command: "bunx",
+        args: ["-y", "@anthropic-ai/server-time"],
+        description: "Time and timezone conversion capabilities",
       },
     },
     settings: {
