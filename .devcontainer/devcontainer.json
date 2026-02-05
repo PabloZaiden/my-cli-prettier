@@ -2,9 +2,9 @@
 	"name": "Ubuntu",
 	"image": "mcr.microsoft.com/devcontainers/base:noble",
 	"features": {
-		"ghcr.io/devcontainers/features/docker-outside-of-docker": {}
+		"ghcr.io/devcontainers/features/docker-outside-of-docker": {},
+		"ghcr.io/pablozaiden/devcontainers-features/bun:latest": {}
 	},
-	"postCreateCommand": "./.devcontainer/install-prerequisites.sh",
 	"customizations": {
 		"vscode": {
 			"extensions": [
